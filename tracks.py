@@ -1,69 +1,43 @@
 from psonic import *
-from math import sin, radians
-from .clips import *
+from .clips import (
+    kick,
+    snare,
+    perc,
+    sample,
+    bass,
+    lead,
+    arp,
+    chord,
+)
 from .metronome import Metronome
 
-
-def sync_and_loop(func):
-    """Metronome decorator"""
-
-    def wrapper():
-        metronome.sync()
-        while True:
-            func()
-
-    return wrapper
-
-@in_thread
-@sync_and_loop
-def kick_track():
-    kick()
-
-@in_thread
-@sync_and_loop
-def snare_track():
-    snare()
- 
-@in_thread
-@sync_and_loop
-def perc_track():
-    perc()
-
-@in_thread
-@sync_and_loop
-def sample_track():
-    sample()
-
-@in_thread
-@sync_and_loop
-def bass_track():
-    bass()
-
-@in_thread
-@sync_and_loop
-def lead_track():
-    lead()
-
-@in_thread
-@sync_and_loop
-def arp_track():
-    arp()
-
-@in_thread
-@sync_and_loop
-def chord_track():
-    chord()
-
+TRACK_CLIPS = {
+    Track.KICK: kick,
+    Track.SNARE: snare,
+    Track.PERC: perc,
+    Track.SAMPLE: sample,
+    Track.BASS: bass,
+    Track.LEAD: lead,
+    Track.ARP: arp,
+    Track.CHORD: chord,
+}
 
 class Track:
-    def __init__(self):
+    def __init__(self, id):
         self.enabled = False
+        self.clip = TRACK_CLIPS[id]
 
     def enable(self):
         self.enabled = True
 
     def disable(self):
         self.enabled = False
+    
+    @in_thread
+    def main_func(self):
+        self.metronome.sync()
+            while True:
+                self.clip()
 
 
 class Sequencer:
@@ -71,14 +45,14 @@ class Sequencer:
         self.metronome = metronome
 
         self.tracks = {
-            "kick": Track(Track.KICK),
-            "snare": Track(Track.SNARE),
-            "perc": Track(Track.PERC),
-            "sample": Track(Track.SAMPLE),
-            "bass": Track(Track.BASS),
-            "lead": Track(Track.LEAD),
-            "arp": Track(Track.ARP),
-            "chord": Track(Track.CHORD),
+            "kick": Track(Track.KICK, metronome),
+            "snare": Track(Track.SNARE, metronome),
+            "perc": Track(Track.PERC, metronome),
+            "sample": Track(Track.SAMPLE, metronome),
+            "bass": Track(Track.BASS, metronome),
+            "lead": Track(Track.LEAD, metronome),
+            "arp": Track(Track.ARP, metronome),
+            "chord": Track(Track.CHORD, metronome),
         }
         self.kick = self.tracks[kick]
         self.snare = self.tracks[snare]
