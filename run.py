@@ -1,9 +1,8 @@
+from .metronome import Metronome
 from .sequencer import Sequencer
 
+seq = Sequencer(bpm=120)
 
-seq = Sequencer()
-
-# Enable tracks
 seq.kick.enable()
 seq.snare.enable()
 seq.perc.enable()
@@ -13,5 +12,4 @@ seq.lead.enable()
 seq.arp.enable()
 seq.chord.enable()
 
-# Start sequencer
 seq.start()

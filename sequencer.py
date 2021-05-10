@@ -14,9 +14,9 @@ class Sequencer:
         "chord": Track(Track.CHORD, metronome),
     }
 
-    def __init__(self, metronome=Metronome(bpm, ticks_per_beat=4)):
-        self.metronome = metronome
-
+    def __init__(self, bpm=120, ticks_per_beat=4):
+        Metronome().bpm = bpm
+        Metronome().ticks_per_beat = ticks_per_beat
         self.kick = Sequencer.TRACKS[kick]
         self.snare = Sequencer.TRACKS[snare]
         self.perc = Sequencer.TRACKS[perc]

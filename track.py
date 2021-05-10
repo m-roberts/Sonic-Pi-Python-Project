@@ -26,6 +26,7 @@ class Track:
     def __init__(self, id):
         self.enabled = False
         self.clip = Track.TRACK_CLIPS[id]
+        self.play_clip()
 
     def enable(self):
         self.enabled = True
@@ -34,8 +35,8 @@ class Track:
         self.enabled = False
     
     @in_thread
-    def main_func(self):
+    def play_clip(self):
         Metronome().sync()
-            while True:
-                if self.enabled:
-                    self.clip()
+        while True:
+            if self.enabled:
+                self.clip()
