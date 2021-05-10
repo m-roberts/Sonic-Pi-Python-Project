@@ -6,9 +6,6 @@ from .tracks import *
 
 metronome = Metronome(bpm, ticks_per_beat=4)
 
-############
-# Let's go #
-############
 kick_drum_track()
 hi_hat_track()
 snare_track()

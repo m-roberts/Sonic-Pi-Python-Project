@@ -5,23 +5,23 @@ def init_sync(func):
     """Thread decorator"""
 
     def wrapper():
-        _thread = threading.Thread(target=func)
-        _thread.start()
+        metronome.sync()
+        func()
 
     return wrapper
 
 
 @in_thread
+@init_sync
 def kick_drum_track():
-    metronome.sync()
 
     while True:
         sample(BD_HAUS, amp=2)
         beat_sleep(1)
 
 @in_thread
+@init_sync
 def hi_hat_track():
-    metronome.sync()
 
     hh_beat_no = 0
     while True:
@@ -33,8 +33,8 @@ def hi_hat_track():
         beat_sleep(wait_len=1/2)
 
 @in_thread
+@init_sync
 def snare_track():
-    metronome.sync()
 
     snare_beat_no = 0
     while True:
@@ -44,19 +44,19 @@ def snare_track():
         beat_sleep(wait_len=1)
 
 @in_thread
+@init_sync
 def vinyl_hiss_track():
-    metronome.sync()
     while True:
         sample(VINYL_HISS, amp=5, rate=7)
         beat_sleep(wait_len=2)
 
 @in_thread
+@init_sync
 def synth_wub_track():
     sin_step = 0
     total_steps = 8
     min_cutoff = 40
     max_cutoff_diff = 60
-    metronome.sync()
     while True:
         sin_step = sin_step + 1
         cutoff=(min_cutoff + max_cutoff_diff * sin(radians(sin_step * 180 / total_steps)))
@@ -65,10 +65,10 @@ def synth_wub_track():
         beat_sleep(wait_len=4)
 
 @in_thread
+@init_sync
 def synth_plucks_track():
     loop_no = 0
     play_random_synth_notes = False
-    metronome.sync()
 
     while True:
         loop_no = 0 if loop_no == 8 else loop_no + 1
