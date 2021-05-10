@@ -1,0 +1,36 @@
+*.py[cdo]
+
+# Python artifacts
+__pycache__
+
+# Editor detritus
+*.vim
+*.sw*
+tags
+.idea
+.vscode
+
+# Packaging detritus
+*.egg
+*.eggs
+*.egg-info
+dist
+.pybuild
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+
+# Unit test / coverage reports
+coverage
+*.xml
+.coverage*
+.tox
+.cache
+.pytest_cache
+
+.DS_Store
