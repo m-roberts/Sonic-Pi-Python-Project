@@ -34,4 +34,5 @@ class Metronome(metaclass=Singleton):
             sleep(tick_len)
 
     def beat_sleep(self, wait_len):
-        pass
+        for _ in range(int(wait_len * self.ticks_per_beat)):
+            self.wait_for_tick()
