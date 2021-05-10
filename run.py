@@ -6,12 +6,14 @@ from .tracks import *
 
 # metronome = Metronome(bpm, ticks_per_beat=4)
 
-# kick_drum_track()
-# hi_hat_track()
+# kick_track()
 # snare_track()
-# vinyl_hiss_track()
-# synth_wub_track()
-# synth_plucks_track()
+# perc_track()
+# sample_track()
+# bass_track()
+# lead_track()
+# arp_track()
+# chord_track()
 
 # metronome.tick_forever()
 

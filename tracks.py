@@ -16,33 +16,43 @@ def sync_and_loop(func):
 
 @in_thread
 @sync_and_loop
-def kick_drum_track():
-    kick_drum()
+def kick_track():
+    kick()
 
-@in_thread
-@sync_and_loop
-def hi_hat_track():
-    hi_hat()
- 
 @in_thread
 @sync_and_loop
 def snare_track():
     snare()
+ 
+@in_thread
+@sync_and_loop
+def perc_track():
+    perc()
 
 @in_thread
 @sync_and_loop
-def vinyl_hiss_track():
-    vinyl_hiss()
+def sample_track():
+    sample()
 
 @in_thread
 @sync_and_loop
-def synth_wub_track():
-    synth_wub()
+def bass_track():
+    bass()
 
 @in_thread
 @sync_and_loop
-def synth_plucks_track():
-    synth_plucks()
+def lead_track():
+    lead()
+
+@in_thread
+@sync_and_loop
+def arp_track():
+    arp()
+
+@in_thread
+@sync_and_loop
+def chord_track():
+    chord()
 
 
 class Track:
