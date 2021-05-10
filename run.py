@@ -1,4 +1,4 @@
-from .sequencer import Sequencer
+from looper.sequencer import Sequencer
 
 seq = Sequencer(bpm=120)
 
