@@ -1,7 +1,8 @@
+from .singleton import Singleton
 from psonic import Message
 from math import ceil
 
-class Metronome:
+class Metronome(metaclass=Singleton):
     def __init__(self, bpm, ticks_per_beat=4):
         self.bpm = bpm
         self.ticks_per_beat = ticks_per_beat

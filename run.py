@@ -1,27 +1,10 @@
-import random
-from threading import Thread, Event
-
-from .metronome import Metronome
-from .tracks import *
-
-# metronome = Metronome(bpm, ticks_per_beat=4)
-
-# kick_track()
-# snare_track()
-# perc_track()
-# sample_track()
-# bass_track()
-# lead_track()
-# arp_track()
-# chord_track()
-
-# metronome.tick_forever()
+from .sequencer import Sequencer
 
 
 seq = Sequencer()
 
+# Enable tracks
 seq.kick.enable()
-
 seq.snare.enable()
 seq.perc.enable()
 seq.sample.enable()
@@ -30,4 +13,5 @@ seq.lead.enable()
 seq.arp.enable()
 seq.chord.enable()
 
+# Start sequencer
 seq.start()
