@@ -1,4 +1,3 @@
-from .metronome import Metronome
 from .sequencer import Sequencer
 
 seq = Sequencer(bpm=120)
