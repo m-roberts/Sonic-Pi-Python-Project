@@ -2,7 +2,7 @@ from psonic import Message
 from math import ceil
 
 class Metronome:
-    def __init__(bpm, ticks_per_beat=4):
+    def __init__(self, bpm, ticks_per_beat=4):
         self.bpm = bpm
         self.ticks_per_beat = ticks_per_beat
         self.signal = Message()
