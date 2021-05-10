@@ -9,6 +9,7 @@ from .clips import (
     arp,
     chord,
 )
+from threading import Thread
 
 
 class Track:
@@ -26,17 +27,16 @@ class Track:
     def __init__(self, id):
         self.enabled = False
         self.clip = Track.TRACK_CLIPS[id]
-        self.play_clip()
+        self._thread = Thread(target=self.play_clip)
 
     def enable(self):
         self.enabled = True
+        self._thread.start()
 
     def disable(self):
         self.enabled = False
     
-    @in_thread
     def play_clip(self):
         Metronome().sync()
-        while True:
-            if self.enabled:
-                self.clip()
+        while self.enabled:
+            self.clip()
