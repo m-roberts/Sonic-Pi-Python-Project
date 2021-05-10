@@ -1,18 +1,19 @@
 from .metronome import Metronome
+
 from psonic import *
 from math import sin, radians
 
 
 def kick():
     sample(BD_HAUS, amp=2)
-    beat_sleep(1)
+    Metronome().beat_sleep(1)
 
 
 def snare():
     if Metronome().tick_number % 2 == 0:
         sample(SN_DUB, amp=2)
 
-    beat_sleep(wait_len=1)
+    Metronome().beat_sleep(wait_len=1)
 
 
 def perc():
@@ -21,12 +22,12 @@ def perc():
     if Metronome().tick_number % 4 == 4:
         sample(DRUM_SPLASH_SOFT, rate=2)
 
-    beat_sleep(wait_len=1/2)
+    Metronome().beat_sleep(wait_len=1/2)
 
 
-def sample():
+def hiss():
     sample(VINYL_HISS, amp=5, rate=7)
-    beat_sleep(wait_len=2)
+    Metronome().beat_sleep(wait_len=2)
 
 
 def bass():
@@ -37,7 +38,7 @@ def bass():
     use_synth(TB303)
     play(E1, release=2, cutoff=cutoff, cutoff_attack=1.5)
 
-    beat_sleep(wait_len=4)
+    Metronome().beat_sleep(wait_len=4)
 
 
 def lead():
@@ -57,7 +58,7 @@ def arp():
             note = notes[i]
         play(note, release=0.1, amp=1.5)
 
-        beat_sleep(wait_len=0.25)
+        Metronome().beat_sleep(wait_len=0.25)
 
 
 def chord():

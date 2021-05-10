@@ -3,7 +3,7 @@ from .clips import (
     kick,
     snare,
     perc,
-    sample,
+    hiss,
     bass,
     lead,
     arp,
@@ -17,7 +17,7 @@ class Track:
         "kick": kick,
         "snare": snare,
         "perc": perc,
-        "sample": sample,
+        "hiss": hiss,
         "bass": bass,
         "lead": lead,
         "arp": arp,
@@ -37,6 +37,6 @@ class Track:
         self.enabled = False
     
     def play_clip(self):
-        Metronome().sync()
+        Metronome().wait_for_tick()
         while self.enabled:
             self.clip()

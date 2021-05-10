@@ -1,6 +1,8 @@
 from .singleton import Singleton
-from psonic import Message
+
+from psonic import Message, sleep
 from math import ceil
+
 
 class Metronome(metaclass=Singleton):
     def __init__(self, bpm, ticks_per_beat=4):
@@ -24,9 +26,12 @@ class Metronome(metaclass=Singleton):
         self.signal.cue()
 
     def tick_forever(self):
-        beats_per_sec = float(BPM / 60)
+        beats_per_sec = float(self.bpm / 60)
         tick_len = 1 / (self.ticks_per_beat * beats_per_sec)
 
         while True:
             self.tick()
             sleep(tick_len)
+
+    def beat_sleep(self, wait_len):
+        pass
