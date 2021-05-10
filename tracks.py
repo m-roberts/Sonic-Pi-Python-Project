@@ -1,8 +1,9 @@
 from psonic import *
 from math import sin, radians
+from .clips import *
 
 def init_sync(func):
-    """Thread decorator"""
+    """Metronome decorator"""
 
     def wrapper():
         metronome.sync()
@@ -10,19 +11,15 @@ def init_sync(func):
 
     return wrapper
 
-
 @in_thread
 @init_sync
 def kick_drum_track():
-
     while True:
-        sample(BD_HAUS, amp=2)
-        beat_sleep(1)
+        kick_drum()
 
 @in_thread
 @init_sync
 def hi_hat_track():
-
     hh_beat_no = 0
     while True:
         hh_beat_no = 1 if hh_beat_no == 4 else hh_beat_no + 1
@@ -35,7 +32,6 @@ def hi_hat_track():
 @in_thread
 @init_sync
 def snare_track():
-
     snare_beat_no = 0
     while True:
         snare_beat_no = 1 if snare_beat_no == 4 else snare_beat_no + 1

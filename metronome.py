@@ -19,9 +19,7 @@ class Metronome:
         self.signal.sync()
 
     def tick(self):
-        self.tick_number = 1 \
-            if self.tick_number == self.ticks_per_beat \
-            else self.tick_number + 1
+        self.tick_number = self.tick_number + 1
         self.signal.cue()
 
     def tick_forever(self):
