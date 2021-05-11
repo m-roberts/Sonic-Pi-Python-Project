@@ -63,7 +63,7 @@ def lead():
         (sp.C4, 1),
         (sp.Ds4, 1),
         (sp.C4, 1),
-        (sp.As4, 2),
+        (None, 2),
         # bar 3
         (sp.Ds4, 1),
         (sp.C4, 1),
@@ -77,8 +77,8 @@ def lead():
     ]
     
     for note in notes:
-        sp.use_synth(sp.SINE)
-        sp.play(note[0])
+        sp.use_synth(sp.PLUCK)
+        sp.play(note[0], amp=2)
         Metronome().beat_sleep(note[1])
 
 
