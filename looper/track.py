@@ -7,6 +7,7 @@ from .clips import (
     sample,
     bass,
     lead,
+    lead_setup,
     arp,
     chord,
 )
@@ -37,7 +38,7 @@ class Track:
         },
         "lead": {
             "clip": lead,
-            "setup": None,
+            "setup": lead_setup,
         },
         "arp": {
             "clip": arp,
