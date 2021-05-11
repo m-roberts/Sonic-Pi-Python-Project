@@ -50,22 +50,30 @@ class Track:
     }
 
     def __init__(self, id):
+        self.id = id
         self.enabled = False
         self.setup = Track.TRACK_CLIPS[id]["setup"]
         self.clip = Track.TRACK_CLIPS[id]["clip"]
+        self._thread = None
+
+    def start_thread(self):
+        self.stop_thread()
         self._thread = Thread(target=self.play_clip)
+        self._thread.start()
+
+    def stop_thread(self, timeout=0):
+        if isinstance(self._thread, Thread) and self._thread.is_alive():
+            self._thread.join(timeout)
 
     def enable(self):
         if not self.enabled:
             self.enabled = True
-            if self._thread.is_alive():
-                self._thread.join()
-            
-            self._thread.start()
+            self.start_thread()
 
     def disable(self):
         self.enabled = False
-    
+        self.stop_thread()
+
     def play_clip(self):
         Metronome().wait_for_tick()
         if callable(self.setup):
