@@ -30,14 +30,11 @@ def sample():
 
 
 def bass():
-    min_cutoff = 40
-    max_cutoff_diff = 60
-    
-    cutoff=(min_cutoff + max_cutoff_diff * sin(radians(Metronome().tick_number % 8 * 180 / 8)))
-    sp.use_synth(sp.TB303)
-    sp.play(sp.E1, release=2, cutoff=cutoff, cutoff_attack=1.5)
-
-    Metronome().beat_sleep(wait_len=4)
+    Metronome().beat_sleep(wait_len=1/4)
+    for _ in range(3):
+        sp.use_synth(sp.TB303)
+        sp.play(sp.C2, sustain=0.1, release=0.1)
+        Metronome().beat_sleep(wait_len=1/4)
 
 
 def lead():
