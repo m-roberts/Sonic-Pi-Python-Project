@@ -5,11 +5,14 @@ from math import ceil
 
 
 class Metronome(metaclass=Singleton):
-    def __init__(self, bpm, ticks_per_beat=4):
+    def __init__(self, bpm, ticks_per_beat=4, beats_per_bar=4):
         self.bpm = bpm
         self.ticks_per_beat = ticks_per_beat
+        self.beats_per_bar = beats_per_bar
         self.signal = Message()
         self.tick_number = 0
+        self.beat_number = 0
+        self.bar_number = 0
 
     def wait_for_beats(self, beats_to_wait):
         self.wait_for_ticks(beats_to_wait * self.ticks_per_beat)
@@ -23,6 +26,15 @@ class Metronome(metaclass=Singleton):
 
     def tick(self):
         self.tick_number = self.tick_number + 1
+
+        # New beat
+        if self.tick_number % self.ticks_per_beat == 1:
+            self.beat_number = self.beat_number + 1
+
+        # New bar
+        if self.beat_number % self.beats_per_bar == 1:
+            self.bar_number = self.bar_number + 1
+
         self.signal.cue()
 
     def tick_forever(self):

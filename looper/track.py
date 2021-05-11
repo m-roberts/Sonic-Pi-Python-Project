@@ -3,7 +3,8 @@ from .clips import (
     kick,
     snare,
     perc,
-    hiss,
+    perc_setup,
+    sample,
     bass,
     lead,
     arp,
@@ -14,19 +15,44 @@ from threading import Thread
 
 class Track:
     TRACK_CLIPS = {
-        "kick": kick,
-        "snare": snare,
-        "perc": perc,
-        "hiss": hiss,
-        "bass": bass,
-        "lead": lead,
-        "arp": arp,
-        "chord": chord,
+        "kick": {
+            "clip": kick,
+            "setup": None,
+        },
+        "snare": {
+            "clip": snare,
+            "setup": None,
+        },
+        "perc": {
+            "clip": perc,
+            "setup": perc_setup,
+        },
+        "sample": {
+            "clip": sample,
+            "setup": None,
+        },
+        "bass": {
+            "clip": bass,
+            "setup": None,
+        },
+        "lead": {
+            "clip": lead,
+            "setup": None,
+        },
+        "arp": {
+            "clip": arp,
+            "setup": None,
+        },
+        "chord": {
+            "clip": chord,
+            "setup": None,
+        },
     }
 
     def __init__(self, id):
         self.enabled = False
-        self.clip = Track.TRACK_CLIPS[id]
+        self.setup = Track.TRACK_CLIPS[id]["setup"]
+        self.clip = Track.TRACK_CLIPS[id]["clip"]
         self._thread = Thread(target=self.play_clip)
 
     def enable(self):
@@ -38,5 +64,8 @@ class Track:
     
     def play_clip(self):
         Metronome().wait_for_tick()
+        if callable(self.setup):
+            self.setup()
+
         while self.enabled:
             self.clip()

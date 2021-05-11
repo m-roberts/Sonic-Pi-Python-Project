@@ -9,7 +9,7 @@ class Sequencer:
         self.kick = Track("kick")
         self.snare = Track("snare")
         self.perc = Track("perc")
-        self.hiss = Track("hiss")
+        self.sample = Track("sample")
         self.bass = Track("bass")
         self.lead = Track("lead")
         self.arp = Track("arp")
