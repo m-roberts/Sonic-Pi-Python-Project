@@ -56,8 +56,12 @@ class Track:
         self._thread = Thread(target=self.play_clip)
 
     def enable(self):
-        self.enabled = True
-        self._thread.start()
+        if not self.enabled:
+            self.enabled = True
+            if self._thread.is_alive():
+                self._thread.join()
+            
+            self._thread.start()
 
     def disable(self):
         self.enabled = False

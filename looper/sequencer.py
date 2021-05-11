@@ -1,5 +1,6 @@
 from .metronome import Metronome
 from .track import Track
+from psonic import in_thread
 
 
 class Sequencer:
@@ -15,15 +16,27 @@ class Sequencer:
         self.arp = Track("arp")
         self.chord = Track("chord")
 
+        self.tracks = [
+            self.kick,
+            self.snare,
+            self.perc,
+            self.sample,
+            self.bass,
+            self.lead,
+            self.arp,
+            self.chord
+        ]
+
     def start(self):
         self.metronome.tick_forever()
 
     def stop(self):
-        self.kick.disable()
-        self.snare.disable()
-        self.perc.disable()
-        self.sample.disable()
-        self.bass.disable()
-        self.lead.disable()
-        self.arp.disable()
-        self.chord.disable()
+        self.disable_all()
+
+    def enable_all(self):
+        for track in self.tracks:
+            track.enable()
+                
+    def disable_all(self):
+        for track in self.tracks:
+            track.disable()

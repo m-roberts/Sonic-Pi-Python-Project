@@ -24,26 +24,36 @@ class Metronome(metaclass=Singleton):
     def wait_for_tick(self):
         self.signal.sync()
 
+    def cue(self):
+        self.signal.cue()
+
+    @property
+    def is_new_beat(self):
+        return self.tick_number % self.ticks_per_beat == 1
+
+    @property
+    def is_new_bar(self):
+        return self.is_new_beat and self.beat_number % self.beats_per_bar == 1
+
     def tick(self):
         self.tick_number = self.tick_number + 1
 
-        # New beat
-        if self.tick_number % self.ticks_per_beat == 1:
+        if self.is_new_beat:
             self.beat_number = self.beat_number + 1
 
-            # New bar
-            if self.beat_number % self.beats_per_bar == 1:
-                self.bar_number = self.bar_number + 1
+        if self.is_new_bar:
+            self.bar_number = self.bar_number + 1
 
-        self.signal.cue()
-
-    def tick_forever(self):
+    def tick_sleep(self):
         beats_per_sec = float(self.bpm / 60)
         tick_len = 1 / (self.ticks_per_beat * beats_per_sec)
+        sleep(tick_len)
 
+    def tick_forever(self):
         while True:
             self.tick()
-            sleep(tick_len)
+            self.cue()
+            self.tick_sleep()
 
     def beat_sleep(self, wait_len):
         for _ in range(int(wait_len * self.ticks_per_beat)):
