@@ -1,15 +1,14 @@
 from .metronome import Metronome
 from .clips import (
-    kick,
-    snare,
-    perc,
-    perc_setup,
-    sample,
-    bass,
-    lead,
-    lead_setup,
-    arp,
-    chord,
+    default_kick,
+    default_snare,
+    default_perc,
+    default_sample,
+    default_bass,
+    default_lead,
+    default_lead_setup,
+    default_arp,
+    default_chord,
 )
 from threading import Thread
 
@@ -17,35 +16,35 @@ from threading import Thread
 class Track:
     TRACK_CLIPS = {
         "kick": {
-            "clip": kick,
+            "clip": default_kick,
             "setup": None,
         },
         "snare": {
-            "clip": snare,
+            "clip": default_snare,
             "setup": None,
         },
         "perc": {
-            "clip": perc,
-            "setup": perc_setup,
+            "clip": default_perc,
+            "setup": None,
         },
         "sample": {
-            "clip": sample,
+            "clip": default_sample,
             "setup": None,
         },
         "bass": {
-            "clip": bass,
+            "clip": default_bass,
             "setup": None,
         },
         "lead": {
-            "clip": lead,
-            "setup": lead_setup,
+            "clip": default_lead,
+            "setup": default_lead_setup,
         },
         "arp": {
-            "clip": arp,
+            "clip": default_arp,
             "setup": None,
         },
         "chord": {
-            "clip": chord,
+            "clip": default_chord,
             "setup": None,
         },
     }

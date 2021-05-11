@@ -5,12 +5,12 @@ from math import sin, radians
 from time import sleep
 
 
-def kick():
+def default_kick():
     sp.sample(sp.BD_HAUS, amp=2.5)
     Metronome().beat_sleep(1)
 
 
-def snare():
+def default_snare():
     if Metronome().beat_number % 2 == 0:
         sleep(0.005)
         sp.sample(sp.SN_DUB, amp=2)
@@ -18,20 +18,17 @@ def snare():
     Metronome().beat_sleep(wait_len=1)
 
 
-def perc_setup():
-    Metronome().beat_sleep(wait_len=1/2)
-
-def perc():
+def default_perc():
     sp.sample(sp.DRUM_CYMBAL_CLOSED, amp=2.5)
-    Metronome().beat_sleep(wait_len=1)
+    Metronome().beat_sleep(wait_len=1/4)
 
 
-def sample():
+def default_sample():
     sp.sample(sp.VINYL_HISS, rate=7, amp=7)
     Metronome().beat_sleep(wait_len=2)
 
 
-def bass():
+def default_bass():
     bar_number = Metronome().bar_number % 4
     notes = [sp.C1, sp.C1, sp.Ds1, sp.As0]
 
@@ -49,10 +46,10 @@ def bass():
         Metronome().beat_sleep(wait_len=1/4)
 
 
-def lead_setup():
+def default_lead_setup():
     Metronome().beat_sleep(wait_len=1)
 
-def lead():
+def default_lead():
     notes = [
         # bar 1
         (sp.Ds4, 1),
@@ -82,7 +79,7 @@ def lead():
         Metronome().beat_sleep(note[1])
 
 
-def arp():
+def default_arp():
     notes = sp.scale(
         root_note=sp.C5,
         scale_mode=sp.MINOR_PENTATONIC,
@@ -95,7 +92,7 @@ def arp():
         Metronome().beat_sleep(wait_len=0.25)
 
 
-def chord():
+def default_chord():
     bar_number = Metronome().bar_number % 4
     chords = [
         sp.chord(sp.C3, sp.MINOR),
