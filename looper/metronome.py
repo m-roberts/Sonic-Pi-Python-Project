@@ -31,9 +31,9 @@ class Metronome(metaclass=Singleton):
         if self.tick_number % self.ticks_per_beat == 1:
             self.beat_number = self.beat_number + 1
 
-        # New bar
-        if self.beat_number % self.beats_per_bar == 1:
-            self.bar_number = self.bar_number + 1
+            # New bar
+            if self.beat_number % self.beats_per_bar == 1:
+                self.bar_number = self.bar_number + 1
 
         self.signal.cue()
 

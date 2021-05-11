@@ -4,7 +4,7 @@ from .track import Track
 
 class Sequencer:
     def __init__(self, bpm=120, ticks_per_beat=4):
-        Metronome(bpm, ticks_per_beat)
+        self.metronome = Metronome(bpm, ticks_per_beat)
 
         self.kick = Track("kick")
         self.snare = Track("snare")
@@ -16,4 +16,14 @@ class Sequencer:
         self.chord = Track("chord")
 
     def start(self):
-        Metronome().tick_forever()
+        self.metronome.tick_forever()
+
+    def stop(self):
+        self.kick.disable()
+        self.snare.disable()
+        self.perc.disable()
+        self.sample.disable()
+        self.bass.disable()
+        self.lead.disable()
+        self.arp.disable()
+        self.chord.disable()

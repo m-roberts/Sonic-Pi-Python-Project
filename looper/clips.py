@@ -2,15 +2,17 @@ from .metronome import Metronome
 
 import psonic as sp
 from math import sin, radians
+from time import sleep
 
 
 def kick():
-    sp.sample(sp.BD_HAUS, amp=2)
+    sp.sample(sp.BD_HAUS, amp=2.5)
     Metronome().beat_sleep(1)
 
 
 def snare():
     if Metronome().beat_number % 2 == 0:
+        sleep(0.005)
         sp.sample(sp.SN_DUB, amp=2)
 
     Metronome().beat_sleep(wait_len=1)
@@ -20,43 +22,96 @@ def perc_setup():
     Metronome().beat_sleep(wait_len=1/2)
 
 def perc():
-    sp.sample(sp.DRUM_CYMBAL_CLOSED, rate=2)
+    sp.sample(sp.DRUM_CYMBAL_CLOSED, amp=2.5)
     Metronome().beat_sleep(wait_len=1)
 
 
 def sample():
-    sp.sample(sp.VINYL_HISS, rate=7)
+    sp.sample(sp.VINYL_HISS, rate=7, amp=7)
     Metronome().beat_sleep(wait_len=2)
 
 
 def bass():
+    bar_number = Metronome().bar_number % 4
+    notes = [sp.C1, sp.C1, sp.Ds1, sp.As0]
+
     Metronome().beat_sleep(wait_len=1/4)
     for _ in range(3):
         sp.use_synth(sp.TB303)
-        sp.play(sp.C2, sustain=0.1, release=0.1)
+        octave_notes = [notes[bar_number - 1], notes[bar_number - 1]+ 12]
+        sp.play(
+            octave_notes,
+            sustain=0.1,
+            release=0.1,
+            amp=0.9,
+            cutoff=110
+        )
         Metronome().beat_sleep(wait_len=1/4)
 
 
-def lead():
-    pass
+def lead_setup():
+    Metronome().beat_sleep(wait_len=1)
 
+def lead():
+    # bar 1
+    sp.play(sp.Ds4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.As4)
+    Metronome().beat_sleep(wait_len=1/4)
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=3/4)
+    # bar 2
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.Ds4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.As4)
+    Metronome().beat_sleep(wait_len=2)
+    # bar 3
+    sp.play(sp.Ds4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.As4)
+    Metronome().beat_sleep(wait_len=1/4)
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=3/4)
+    # bar 4
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.Ds4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.C4)
+    Metronome().beat_sleep(wait_len=1)
+    sp.play(sp.As4)
+    Metronome().beat_sleep(wait_len=2)
 
 def arp():
-    play_random_synth_notes = True
-
-    notes = sp.scale(sp.E4 if Metronome().tick_number %
-                         8 <= 4 else sp.E5, sp.MINOR_PENTATONIC, num_octaves=2)
-    no_of_notes_per_beat = 4
-    for i in range(no_of_notes_per_beat):
+    notes = sp.scale(
+        root_note=sp.C5,
+        scale_mode=sp.MINOR_PENTATONIC,
+        num_octaves=1
+    )
+    for i in range(3):
         sp.use_synth(sp.SINE)
-        if play_random_synth_notes:
-            note = sp.random.choice(notes)
-        else:
-            note = notes[i]
-        sp.play(note, release=0.1, amp=1.5)
+        sp.play(notes[-(i+1)], release=0.1, amp=0.5)
 
         Metronome().beat_sleep(wait_len=0.25)
 
 
 def chord():
-    pass
+    bar_number = Metronome().bar_number % 4
+    chords = [
+        sp.chord(sp.C3, sp.MINOR),
+        sp.chord(sp.C3, sp.MINOR),
+        sp.chord(sp.Ds3, sp.MAJOR),
+        sp.chord(sp.As2, sp.MAJOR),
+    ]
+
+    sp.use_synth(sp.TB303)
+    sp.play(chords[bar_number - 1], amp=1.4, release=1.2)
+    Metronome().beat_sleep(wait_len=4)
