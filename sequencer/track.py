@@ -1,15 +1,5 @@
-from .metronome import Metronome
-from .clips import (
-    default_kick,
-    default_snare,
-    default_perc,
-    default_sample,
-    default_bass,
-    default_lead,
-    default_lead_setup,
-    default_arp,
-    default_chord,
-)
+from sequencer.metronome import Metronome
+from .clips import *
 from threading import Thread
 
 
@@ -25,7 +15,7 @@ class Track:
         },
         "perc": {
             "clip": default_perc,
-            "setup": None,
+            "setup": default_perc_setup,
         },
         "sample": {
             "clip": default_sample,
@@ -45,6 +35,10 @@ class Track:
         },
         "chord": {
             "clip": default_chord,
+            "setup": None,
+        },
+        "perform": {
+            "clip": None,
             "setup": None,
         },
     }
@@ -79,5 +73,14 @@ class Track:
         if callable(self.setup):
             self.setup()
 
-        while self.enabled:
-            self.clip()
+        if self.id == "perform":
+            while True:
+                while not callable(self.clip):
+                    Metronome().wait_for_tick()
+
+                self.clip()
+                self.clip = None
+        else:
+            while self.enabled:
+                if callable(self.clip):
+                    self.clip()

@@ -1,4 +1,4 @@
-from .metronome import Metronome
+from sequencer.metronome import Metronome
 from .track import Track
 from psonic import in_thread
 
@@ -15,6 +15,10 @@ class Sequencer:
         self.lead = Track("lead")
         self.arp = Track("arp")
         self.chord = Track("chord")
+        self.perform = Track("perform")
+
+        # Perform is a 'hot' track
+        self.perform.enable()
 
         self.tracks = [
             self.kick,
@@ -24,7 +28,8 @@ class Sequencer:
             self.bass,
             self.lead,
             self.arp,
-            self.chord
+            self.chord,
+            self.perform
         ]
 
     def start(self):

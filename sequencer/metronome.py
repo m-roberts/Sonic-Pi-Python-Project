@@ -1,7 +1,16 @@
-from .singleton import Singleton
-
 from psonic import Message, sleep
 from math import ceil
+
+
+class Singleton(type):
+    def __init__(cls, name, bases, dic):
+        super(Singleton, cls).__init__(name, bases, dic)
+        cls.instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls.instance
 
 
 class Metronome(metaclass=Singleton):
@@ -13,6 +22,22 @@ class Metronome(metaclass=Singleton):
         self.tick_number = 0
         self.beat_number = 0
         self.bar_number = 0
+
+    @property
+    def tick_tuple(self):
+        return (
+            self.bar_number,
+            self.relative_beat_number,
+            self.relative_tick_number,
+        )
+
+    @property
+    def relative_beat_number(self):
+        return ((self.beat_number - 1) % self.beats_per_bar) + 1
+
+    @property
+    def relative_tick_number(self):
+        return ((self.tick_number - 1) % self.ticks_per_beat) + 1    
 
     def wait_for_beats(self, beats_to_wait):
         self.wait_for_ticks(beats_to_wait * self.ticks_per_beat)
