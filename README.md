@@ -11,3 +11,5 @@
 ### TODO
 * track waits until sequencer starts to start playing a clip
 * allow easy override of functions
+* allow enable/disable multiple tracks at once
+* evaluate grouping tracks, such as drums (e.g. seq.drums.disable)

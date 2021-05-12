@@ -47,8 +47,14 @@ def breakdown():
     seq.arp.enable()
     seq.chord.enable()
 
+def outro_kick():
+    for i in [1, 1, 0.5, 0.5, 1]:
+      sp.sample(sp.BD_HAUS, amp=1.5)
+      Metronome().beat_sleep(i)
+
 def outro():
     seq.enable_all()
+    seq.kick.clip = outro_kick
     seq.perform.clip = open_cymbal
     seq.perc.clip = default_perc
     seq.perc.setup = default_perc_setup
@@ -61,7 +67,7 @@ sections = {
     (25, 1, 1): breakdown,
     (31, 1, 1): stop_perc,
     (33, 1, 1): outro,
-    (41, 1, 1): lambda: exit(),
+    (41, 1, 1): exit,
 }
 metronome = seq.metronome
 

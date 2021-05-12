@@ -5,6 +5,7 @@ import psonic as sp
 
 def default_chord():
     bar_number = Metronome().bar_number % 4
+
     chords = [
         sp.chord(sp.C3, sp.MINOR),
         sp.chord(sp.C3, sp.MINOR),
