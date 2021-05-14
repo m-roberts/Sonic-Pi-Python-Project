@@ -1,6 +1,5 @@
 from sequencer import *
 from psonic import *
-from sys import exit
 
 seq = Sequencer(bpm=108)
 
