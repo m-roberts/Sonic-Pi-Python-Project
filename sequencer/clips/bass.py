@@ -3,7 +3,7 @@ from sequencer.metronome import Metronome
 import psonic as sp
 
 
-def default_bass():
+def synthwave_offbeat_bass():
     bar_number = Metronome().bar_number % 4
     notes = [sp.C1, sp.C1, sp.Ds1, sp.As0]
 

@@ -3,7 +3,7 @@ from sequencer.metronome import Metronome
 import psonic as sp
 
 
-def default_chord():
+def simple_four_chords():
     bar_number = Metronome().bar_number % 4
 
     chords = [

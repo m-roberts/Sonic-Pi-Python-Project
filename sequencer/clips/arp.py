@@ -3,7 +3,7 @@ from sequencer.metronome import Metronome
 import psonic as sp
 
 
-def default_arp():
+def three_quarter_notes_descending_arp():
     notes = sp.scale(
         root_note=sp.C5,
         scale_mode=sp.MINOR_PENTATONIC,

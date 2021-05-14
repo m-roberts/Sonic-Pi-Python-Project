@@ -11,7 +11,7 @@ seq = Sequencer(bpm=108)
 # Or handle sections manually...
 def intro():
     seq.kick.enable()
-    seq.kick.clip = quiet_kick
+    seq.kick.clip = Clip(quiet_kick)
 
     seq.sample.enable()
     seq.bass.enable()
@@ -19,7 +19,7 @@ def intro():
 def start_snare():
     seq.snare.enable()
 
-    seq.perform.clip = open_cymbal
+    seq.perform.clip = Clip(open_cymbal)
 
 def start_perc():
     seq.perc.enable()
@@ -30,12 +30,11 @@ def stop_perc():
 def first_chorus():
     seq.enable_all()
 
-    seq.perform.clip = open_cymbal
+    seq.perform.clip = Clip(open_cymbal)
 
-    seq.kick.clip = default_kick
+    seq.kick.clip = Clip(four_to_the_floor)
 
-    seq.perc.clip = quarter_note_closed_cymbals
-    seq.perc.setup = None
+    seq.perc.clip = Clip(quarter_note_closed_cymbals)
 
     seq.sample.disable()
 
@@ -54,10 +53,9 @@ def outro_kick():
 
 def outro():
     seq.enable_all()
-    seq.kick.clip = outro_kick
-    seq.perform.clip = open_cymbal
-    seq.perc.clip = default_perc
-    seq.perc.setup = default_perc_setup
+    seq.kick.clip = Clip(outro_kick)
+    seq.perform.clip = Clip(open_cymbal)
+    seq.perc.clip = Clip(one_beat_hi_hat, 1/2)
 
 sections = {
     (1,  1, 1): intro,

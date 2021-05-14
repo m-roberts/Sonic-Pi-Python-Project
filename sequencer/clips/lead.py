@@ -3,12 +3,10 @@ from sequencer.metronome import Metronome
 import psonic as sp
 
 
-def default_lead_setup():
-    Metronome().beat_sleep(wait_len=1)
-
-def default_lead():
+def whimsical_melody_lead():
     notes = [
         # bar 1
+        (None, 1),
         (sp.Ds4, 1),
         (sp.C4, 1),
         (sp.As4, 1/4),
@@ -17,8 +15,9 @@ def default_lead():
         (sp.C4, 1),
         (sp.Ds4, 1),
         (sp.C4, 1),
-        (None, 2),
+        (None, 1),
         # bar 3
+        (None, 1),
         (sp.Ds4, 1),
         (sp.C4, 1),
         (sp.As4, 1/4),
@@ -27,7 +26,7 @@ def default_lead():
         (sp.C4, 1),
         (sp.Ds4, 1),
         (sp.C4, 1),
-        (sp.As4, 2),
+        (sp.As4, 1),
     ]
     
     for note in notes:

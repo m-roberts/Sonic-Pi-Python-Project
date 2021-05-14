@@ -4,7 +4,7 @@ import psonic as sp
 from time import sleep
 
 
-def default_snare():
+def two_beat_snare():
     if Metronome().beat_number % 2 == 0:
         sleep(0.005)
         sp.sample(sp.SN_DUB, amp=2)

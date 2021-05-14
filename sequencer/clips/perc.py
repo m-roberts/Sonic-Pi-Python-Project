@@ -3,11 +3,7 @@ from sequencer.metronome import Metronome
 import psonic as sp
 
 
-def default_perc_setup():
-    Metronome().beat_sleep(wait_len=1/2)
-
-
-def default_perc():
+def one_beat_hi_hat():
     sp.sample(sp.DRUM_CYMBAL_CLOSED, amp=2.5)
     Metronome().beat_sleep(wait_len=1)
 

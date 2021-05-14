@@ -3,51 +3,48 @@ from .clips import *
 from threading import Thread
 
 
+class Clip:
+    def __init__(self, func, beat_offset=0):
+        self.func = func
+        self.beat_offset = beat_offset
+
+
 class Track:
     TRACK_CLIPS = {
         "kick": {
-            "clip": default_kick,
-            "setup": None,
+            "func": four_to_the_floor,
         },
         "snare": {
-            "clip": default_snare,
-            "setup": None,
+            "func": two_beat_snare,
         },
         "perc": {
-            "clip": default_perc,
-            "setup": default_perc_setup,
+            "func": one_beat_hi_hat,
+            "beat_offset": 1/2,
         },
         "sample": {
-            "clip": default_sample,
-            "setup": None,
+            "func": vinyl_hiss,
         },
         "bass": {
-            "clip": default_bass,
-            "setup": None,
+            "func": synthwave_offbeat_bass,
         },
         "lead": {
-            "clip": default_lead,
-            "setup": default_lead_setup,
+            "func": whimsical_melody_lead,
         },
         "arp": {
-            "clip": default_arp,
-            "setup": None,
+            "func": three_quarter_notes_descending_arp,
         },
         "chord": {
-            "clip": default_chord,
-            "setup": None,
-        },
-        "perform": {
-            "clip": None,
-            "setup": None,
+            "func": simple_four_chords,
         },
     }
 
     def __init__(self, id):
         self.id = id
         self.enabled = False
-        self.setup = Track.TRACK_CLIPS[id]["setup"]
-        self.clip = Track.TRACK_CLIPS[id]["clip"]
+
+        current_clip = Track.TRACK_CLIPS.get(id, dict())
+        self.clip = Clip(current_clip.get("func", None), current_clip.get("beat_offset", 0))
+
         self._thread = None
 
     def start_thread(self):
@@ -70,17 +67,16 @@ class Track:
 
     def play_clip(self):
         Metronome().wait_for_tick()
-        if callable(self.setup):
-            self.setup()
+        Metronome().beat_sleep(self.clip.beat_offset)
 
         if self.id == "perform":
             while True:
-                while not callable(self.clip):
+                while not callable(self.clip.func):
                     Metronome().wait_for_tick()
 
-                self.clip()
-                self.clip = None
+                self.clip.func()
+                self.clip.func = None
         else:
             while self.enabled:
-                if callable(self.clip):
-                    self.clip()
+                if callable(self.clip.func):
+                    self.clip.func()

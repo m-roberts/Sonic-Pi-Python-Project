@@ -8,6 +8,6 @@ def quiet_kick():
     Metronome().beat_sleep(1)
 
 
-def default_kick():
+def four_to_the_floor():
     sp.sample(sp.BD_HAUS, amp=2.5)
     Metronome().beat_sleep(1)
