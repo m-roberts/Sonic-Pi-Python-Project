@@ -1,5 +1,3 @@
-from sequencer.metronome import Metronome
-from .clips import *
 from threading import Thread
 
 
@@ -10,40 +8,12 @@ class Clip:
 
 
 class Track:
-    TRACK_CLIPS = {
-        "kick": {
-            "func": four_to_the_floor,
-        },
-        "snare": {
-            "func": two_beat_snare,
-        },
-        "perc": {
-            "func": one_beat_hi_hat,
-            "beat_offset": 1/2,
-        },
-        "sample": {
-            "func": vinyl_hiss,
-        },
-        "bass": {
-            "func": synthwave_offbeat_bass,
-        },
-        "lead": {
-            "func": whimsical_melody_lead,
-        },
-        "arp": {
-            "func": three_quarter_notes_descending_arp,
-        },
-        "chord": {
-            "func": simple_four_chords,
-        },
-    }
-
-    def __init__(self, id):
+    def __init__(self, id, metronome):
         self.id = id
+        self.metronome = metronome
         self.enabled = False
 
-        current_clip = Track.TRACK_CLIPS.get(id, dict())
-        self.clip = Clip(current_clip.get("func", None), current_clip.get("beat_offset", 0))
+        self.clip = Clip(None, 0)
 
         self._thread = None
 
@@ -57,6 +27,10 @@ class Track:
             self._thread.join(timeout)
 
     def enable(self):
+        if self.clip is None and self.id != "perform":
+            print(f"{self.id} track cannot be enabled as it has no clip")
+            return
+
         if not self.enabled:
             self.enabled = True
             self.start_thread()
@@ -66,13 +40,13 @@ class Track:
         self.stop_thread()
 
     def play_clip(self):
-        Metronome().wait_for_tick()
-        Metronome().beat_sleep(self.clip.beat_offset)
+        self.metronome.wait_for_tick()
+        self.metronome.beat_sleep(self.clip.beat_offset)
 
         if self.id == "perform":
             while True:
                 while not callable(self.clip.func):
-                    Metronome().wait_for_tick()
+                    self.metronome.wait_for_tick()
 
                 self.clip.func()
                 self.clip.func = None

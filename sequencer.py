@@ -1,23 +1,22 @@
-from sequencer.metronome import Metronome
-from .track import Track
+from track import Track
 from psonic import in_thread
 
 
 class Sequencer:
-    def __init__(self, bpm=120, ticks_per_beat=4):
-        self.metronome = Metronome(bpm, ticks_per_beat)
+    def __init__(self, metronome):
+        self.metronome = metronome
 
         self.trigger_events = dict()
 
-        self.kick = Track("kick")
-        self.snare = Track("snare")
-        self.perc = Track("perc")
-        self.sample = Track("sample")
-        self.bass = Track("bass")
-        self.lead = Track("lead")
-        self.arp = Track("arp")
-        self.chord = Track("chord")
-        self.perform = Track("perform")
+        self.kick = Track("kick", metronome)
+        self.snare = Track("snare", metronome)
+        self.perc = Track("perc", metronome)
+        self.sample = Track("sample", metronome)
+        self.bass = Track("bass", metronome)
+        self.lead = Track("lead", metronome)
+        self.arp = Track("arp", metronome)
+        self.chord = Track("chord", metronome)
+        self.perform = Track("perform", metronome)
 
         # Perform is a 'hot' track
         self.perform.enable()

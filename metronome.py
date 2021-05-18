@@ -1,5 +1,5 @@
-from psonic import Message, sleep
-from math import ceil
+from psonic import Message
+from time import sleep
 
 
 class Singleton(type):
@@ -14,7 +14,7 @@ class Singleton(type):
 
 
 class Metronome(metaclass=Singleton):
-    def __init__(self, bpm, ticks_per_beat=4, beats_per_bar=4):
+    def __init__(self, bpm=120, ticks_per_beat=4, beats_per_bar=4):
         self.bpm = bpm
         self.ticks_per_beat = ticks_per_beat
         self.beats_per_bar = beats_per_bar
@@ -80,6 +80,10 @@ class Metronome(metaclass=Singleton):
     @property
     def is_active(self):
         return self.tick_to_stop_at is None or self.tick_number < self.tick_to_stop_at
+
+    def bar_sleep(self, wait_len):
+        for _ in range(int(wait_len * self.beats_per_bar * self.ticks_per_beat)):
+            self.wait_for_tick()
 
     def beat_sleep(self, wait_len):
         for _ in range(int(wait_len * self.ticks_per_beat)):
