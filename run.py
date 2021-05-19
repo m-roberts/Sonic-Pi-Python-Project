@@ -39,12 +39,12 @@ def outro():
 
     seq.kick.clip = Clip(outro_kick)
     seq.perform.clip = Clip(open_cymbal)
-    seq.perc.clip = Clip(one_beat_hi_hat, 1/2)
+    seq.perc.clip = Clip(one_beat_hi_hat, offset=1/2)
 
 seq.register_event(intro,        bar=1)
 seq.register_event(start_snare,  bar=4, beat=4)
 seq.register_event(start_perc,   bar=9)
-seq.register_event(first_chorus, bar=9)
+seq.register_event(first_chorus, bar=17)
 seq.register_event(breakdown,    bar=25)
 seq.register_event(stop_perc,    bar=31)
 seq.register_event(outro,        bar=33)
