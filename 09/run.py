@@ -36,9 +36,10 @@ def offbeat_snare(metronome):
     metronome.beat_sleep(1)
 
 # Perc
-def one_beat_hi_hat(metronome):
+def offbeat_hi_hat(metronome):
+    metronome.beat_sleep(0.5)
     sample(DRUM_CYMBAL_CLOSED, amp=2.5)
-    metronome.beat_sleep(1)
+    metronome.beat_sleep(0.5)
 
 def quarter_note_closed_cymbals(metronome):
     sample(DRUM_CYMBAL_CLOSED, amp=2.5)
@@ -130,7 +131,7 @@ def simple_four_chords(metronome):
 # Create tracks
 kick_track   = Track(four_to_the_floor,                  metronome)
 snare_track  = Track(offbeat_snare,                      metronome)
-perc_track   = Track(one_beat_hi_hat,                    metronome, beat_offset=1/2)
+perc_track   = Track(offbeat_hi_hat,                    metronome)
 sample_track = Track(vinyl_hiss,                         metronome)
 bass_track   = Track(synthwave_offbeat_bass,             metronome)
 lead_track   = Track(whimsical_melody_lead,              metronome)

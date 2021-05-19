@@ -1,18 +1,12 @@
 from threading import Thread
 
 
-class Clip:
-    def __init__(self, func, beat_offset):
-        self.func = func
-        self.beat_offset = beat_offset
-
-
 class Track:
-    def __init__(self, func, metronome, beat_offset=0):
+    def __init__(self, func, metronome):
         self.metronome = metronome
         self.enabled = False
 
-        self.clip = Clip(func, beat_offset)
+        self.func = func
 
         self._thread = None
 
@@ -36,7 +30,6 @@ class Track:
 
     def play_clip(self):
         self.metronome.wait_for_tick()
-        self.metronome.beat_sleep(self.clip.beat_offset)
 
         while self.enabled:
             if callable(self.clip.func):
