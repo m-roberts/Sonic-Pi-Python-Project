@@ -1,5 +1,4 @@
-from sequencer import Sequencer
-from track import Clip
+from track import Clip, Track
 from metronome import Metronome
 
 from pitop import Potentiometer
@@ -7,7 +6,6 @@ from psonic import *
 
 
 metronome = Metronome(bpm=108)
-seq = Sequencer(metronome)
 
 ###########################
 # DEFINE GLOBAL VARIABLES #
@@ -20,17 +18,17 @@ pot = Potentiometer("A0")
 ################
 
 # Kick
-def four_to_the_floor():
+def four_to_the_floor(metronome):
     sample(BD_HAUS, amp=kick_amp)
     metronome.beat_sleep(1)
 
-def outro_kick():
+def outro_kick(metronome):
     for i in [1, 1, 0.5, 0.5, 1]:
         sp.sample(sp.BD_HAUS, amp=kick_amp)
         metronome.beat_sleep(i)
 
 # Snare
-def offbeat_snare():
+def offbeat_snare(metronome):
     if metronome.beat_number % 2 == 0:
         sleep(0.005)
         sample(SN_DUB, amp=2)
@@ -38,21 +36,21 @@ def offbeat_snare():
     metronome.beat_sleep(1)
 
 # Perc
-def one_beat_hi_hat():
+def one_beat_hi_hat(metronome):
     sample(DRUM_CYMBAL_CLOSED, amp=2.5)
     metronome.beat_sleep(1)
 
-def quarter_note_closed_cymbals():
+def quarter_note_closed_cymbals(metronome):
     sample(DRUM_CYMBAL_CLOSED, amp=2.5)
     metronome.beat_sleep(1/4)
 
 # Sample
-def vinyl_hiss():
+def vinyl_hiss(metronome):
     sample(VINYL_HISS, rate=7, amp=3)
     metronome.beat_sleep(2)
 
 # Bass
-def synthwave_offbeat_bass():
+def synthwave_offbeat_bass(metronome):
     bar_number = metronome.bar_number % 4
     notes = [C1, C1, Ds1, As0]
 
@@ -70,7 +68,7 @@ def synthwave_offbeat_bass():
         metronome.beat_sleep(1/4)
 
 # Lead
-def whimsical_melody_lead():
+def whimsical_melody_lead(metronome):
     notes = [
         # bar 1
         (None, 1),
@@ -102,7 +100,7 @@ def whimsical_melody_lead():
         metronome.beat_sleep(note[1])
 
 # Arp
-def three_quarter_notes_descending_arp():
+def three_quarter_notes_descending_arp(metronome):
     notes = scale(
         root_note=C5,
         scale_mode=MINOR_PENTATONIC,
@@ -115,7 +113,7 @@ def three_quarter_notes_descending_arp():
         metronome.beat_sleep(0.25)
 
 # Chord
-def simple_four_chords():
+def simple_four_chords(metronome):
     bar_number = metronome.bar_number % 4
 
     chords = [
@@ -129,67 +127,18 @@ def simple_four_chords():
     play(chords[bar_number - 1], amp=1.4, release=1.2)
     metronome.bar_sleep(1)
 
-# Define initial clips
-seq.kick.clip = Clip(four_to_the_floor)
-seq.snare.clip = Clip(offbeat_snare)
-seq.perc.clip = Clip(one_beat_hi_hat, beat_offset=1/2)
-seq.sample.clip = Clip(vinyl_hiss)
-seq.bass.clip = Clip(synthwave_offbeat_bass)
-seq.lead.clip = Clip(whimsical_melody_lead)
-seq.arp.clip = Clip(three_quarter_notes_descending_arp)
-seq.chord.clip = Clip(simple_four_chords)
+# Create tracks
+kick_track   = Track(four_to_the_floor,                  metronome)
+snare_track  = Track(offbeat_snare,                      metronome)
+perc_track   = Track(one_beat_hi_hat,                    metronome, beat_offset=1/2)
+sample_track = Track(vinyl_hiss,                         metronome)
+bass_track   = Track(synthwave_offbeat_bass,             metronome)
+lead_track   = Track(whimsical_melody_lead,              metronome)
+arp_track    = Track(three_quarter_notes_descending_arp, metronome)
+chord_track  = Track(simple_four_chords,                 metronome)
 
-############
-# SECTIONS #
-############
-def intro():
-    seq.enable_tracks([seq.kick, seq.sample, seq.bass])
-    kick_amp = 1.5
 
-def start_snare():
-    seq.enable_tracks(seq.snare)
-
-    # Perform one-shot cymbal hit
-    seq.perform.clip = Clip(open_cymbal)
-
-def start_perc():
-    seq.enable_tracks(seq.perc)
-
-def stop_perc():
-    seq.disable_tracks(seq.perc)
-
-def first_chorus():
-    global kick_amp
-
-    # Enable all tracks except for sample
-    seq.enable_tracks(seq.all_tracks)
-    seq.disable_tracks(seq.sample)
-
-    # Perform one-shot cymbal hit
-    seq.perform.clip = Clip(open_cymbal)
-    seq.kick.clip = Clip(four_to_the_floor)
-    kick_amp = 2.5
-
-    seq.perc.clip = Clip(quarter_note_closed_cymbals)
-
-def breakdown():
-    # Only play these specific tracks
-    seq.enable_tracks([seq.bass, seq.perc, seq.arp, seq.chord], exclusive=True)
-
-def outro():
-    seq.enable_tracks(seq.all_tracks)
-
-    seq.kick.clip = Clip(outro_kick)
-    seq.perform.clip = Clip(open_cymbal)
-    seq.perc.clip = Clip(one_beat_hi_hat, 1/2)
-
-# Register track change events
-seq.register_event(intro,        bar=1)
-seq.register_event(start_snare,  bar=4, beat=4)
-seq.register_event(start_perc,   bar=9)
-seq.register_event(first_chorus, bar=9)
-seq.register_event(breakdown,    bar=25)
-seq.register_event(stop_perc,    bar=31)
-seq.register_event(outro,        bar=33)
-seq.set_length(40)
-seq.start()
+while True:
+    metronome.tick()
+    metronome.cue()
+    metronome.tick_sleep()

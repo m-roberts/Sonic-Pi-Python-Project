@@ -2,18 +2,17 @@ from threading import Thread
 
 
 class Clip:
-    def __init__(self, func, beat_offset=0):
+    def __init__(self, func, beat_offset):
         self.func = func
         self.beat_offset = beat_offset
 
 
 class Track:
-    def __init__(self, id, metronome):
-        self.id = id
+    def __init__(self, func, metronome, beat_offset=0):
         self.metronome = metronome
         self.enabled = False
 
-        self.clip = Clip(None, 0)
+        self.clip = Clip(func, beat_offset)
 
         self._thread = None
 
@@ -27,10 +26,6 @@ class Track:
             self._thread.join(timeout)
 
     def enable(self):
-        if self.clip is None and self.id != "perform":
-            print(f"{self.id} track cannot be enabled as it has no clip")
-            return
-
         if not self.enabled:
             self.enabled = True
             self.start_thread()
@@ -43,14 +38,6 @@ class Track:
         self.metronome.wait_for_tick()
         self.metronome.beat_sleep(self.clip.beat_offset)
 
-        if self.id == "perform":
-            while True:
-                while not callable(self.clip.func):
-                    self.metronome.wait_for_tick()
-
-                self.clip.func()
-                self.clip.func = None
-        else:
-            while self.enabled:
-                if callable(self.clip.func):
-                    self.clip.func()
+        while self.enabled:
+            if callable(self.clip.func):
+                self.clip.func(self.metronome)

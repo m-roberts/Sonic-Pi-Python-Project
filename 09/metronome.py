@@ -2,18 +2,7 @@ from psonic import Message
 from time import sleep
 
 
-class Singleton(type):
-    def __init__(cls, name, bases, dic):
-        super(Singleton, cls).__init__(name, bases, dic)
-        cls.instance = None
-
-    def __call__(cls, *args, **kwargs):
-        if cls.instance is None:
-            cls.instance = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls.instance
-
-
-class Metronome(metaclass=Singleton):
+class Metronome:
     def __init__(self, bpm=120, ticks_per_beat=4, beats_per_bar=4):
         self.bpm = bpm
         self.ticks_per_beat = ticks_per_beat
@@ -39,13 +28,6 @@ class Metronome(metaclass=Singleton):
     @property
     def relative_tick_number(self):
         return ((self.tick_number - 1) % self.ticks_per_beat) + 1    
-
-    def wait_for_beats(self, beats_to_wait):
-        self.wait_for_ticks(beats_to_wait * self.ticks_per_beat)
-
-    def wait_for_ticks(self, ticks_to_wait):
-        for _ in range(ticks_to_wait):
-            self.wait_for_tick()
 
     def wait_for_tick(self):
         self.signal.sync()
